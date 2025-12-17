@@ -32,7 +32,21 @@ studentservice.getStudentById(id);
         if(existingStudent.isPresent()){
             student.setId(id);
 
-            
+    studentservice.insertStudent(student);
+          return"Student updated successfully";
+        }else{
+            return "Student not found";
+        }
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public String delete(@PathVariable int id){
+        optional<StudentEntity>student=studentservice.getStudentById(id);
+        if(student.isPresent()){
+    studentservice.deleteStudentById(id);
+          return"Student deleted successfully";
+        }else{
+            return "Studnet not found";
         }
     }
 
