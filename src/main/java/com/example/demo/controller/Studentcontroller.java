@@ -1,6 +1,12 @@
 package com.example.practice.ontroller;
 
-import java.util.List;
-import java.util.Optional;
+public class Studentcontroller{
+    @Autowired
+    Studentservice studentservice;
 
-import org.springframework.beans.factory.annotation.Autowi
+    @PostMapping("/add")
+    public StudentEntity
+post(@RequestBody StudentEntity student){
+    return
+}
+}
