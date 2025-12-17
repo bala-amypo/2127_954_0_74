@@ -1,68 +1,69 @@
-package com.example.practice.controller;
+
+package com.example.demo.controller;
 
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PathVariable;
-import com.example.practice.service.Studentservice;
-import com.example.practice.entity.StudentEntity;
+import org.springframework.web.bind.annotation.*;
+
+import com.example.demo.entity.Student;
+import com.example.demo.service.StudentService;
 
 @RestController
-public class Studentcontroller{
-    @Autowired
-    Studentservice studentservice;
+@RequestMapping("/students") // ✅ base path
+public class StudentController {
 
-    @PostMapping("/add")
-    public StudentEntity
-post(@RequestBody StudentEntity student){
-    return
-studentservice.saveData(student);
-}
+    private final StudentService studentService;
 
-    @GetMapping("/get")
-    public List<StudentEntity>
-getAllStudents(){
-    return
-studentservice.getAllStudentEntity();
-
-}
-
-    @GetMapping("get/{id}")
-    public Optional<StudentEntity>
-get(@PathVariable int id){
-    return
-studentservice.getStudentById(id);
-}
-    @PutMapping("/update/{id}")
-    public String update(@RequestBody StudentEntity student,@PathVariable int id){
-        Optional<StudentEntity>
-    existingStudent=studentservice.getStudentById(id);
-        if(existingStudent.isPresent()){
-            student.setId(id);
-
-    studentservice.insertStudent(student);
-          return"Student updated successfully";
-        }else{
-            return "Student not found";
-        }
+    public StudentController(StudentService studentService) {
+        this.studentService = studentService;
     }
 
-    @DeleteMapping("/delete/{id}")
-    public String delete(@PathVariable int id){
-        optional<StudentEntity>student=studentservice.getStudentById(id);
-        if(student.isPresent()){
-    studentservice.deleteStudentById(id);
-          return"Student deleted successfully";
-        }else{
-            return "Studnet not found";
-        }
+    // CREATE
+    @PostMapping
+    public Student postStudent(@RequestBody Student st) {
+        return studentService.insertStudent(st);
     }
 
+    // READ ALL
+    @GetMapping
+    public List<Student> getAll() {
+        return studentService.getAllStudents();
+    }
+
+    // READ ONE
+    @GetMapping("/{id}")
+    public Optional<Student> getById(@PathVariable Long id) {
+        return studentService.getOneStudent(id);
+    }
+
+    // UPDATE
+    @PutMapping("/{id}")
+    public String updateStudent(@PathVariable Long id, @RequestBody Student st) {
+        Optional<Student> studentOpt = studentService.getOneStudent(id);
+
+        if (studentOpt.isPresent()) {
+            Student student = studentOpt.get();
+            student.setName(st.getName());
+            student.setEmail(st.getEmail());
+            student.setCgpa(st.getCgpa());
+            student.setDob(st.getDob());
+
+            studentService.insertStudent(student);
+            return "Updated Successfully ✅";
+        }
+        return "Student Not Found ❌";
+    }
+
+    // DELETE
+    @DeleteMapping("/{id}")
+    public String deleteStudent(@PathVariable Long id) {
+        Optional<Student> student = studentService.getOneStudent(id);
+
+        if (student.isPresent()) {
+            studentService.deleteStudent(id);
+            return "Deleted Successfully ✅";
+        }
+        return "Student Not Found ❌";
+    }
 }
