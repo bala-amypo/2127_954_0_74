@@ -19,7 +19,21 @@ studentservice.getAllStudentEntity();
 
 }
 
-@GetMapping("get/{id}")
-public Optional<StudentEntity>
+    @GetMapping("get/{id}")
+    public Optional<StudentEntity>
+get(@PathVariable int id){
+    return
+studentservice.getStudentById(id);
+}
+    @PutMapping("/update/{id}")
+    public String update(@RequestBody StudentEntity student,@PathVariable int id){
+        Optional<StudentEntity>
+    existingStudent=studentservice.getStudentById(id);
+        if(existingStudent.isPresent()){
+            student.setId(id);
+
+            
+        }
+    }
 
 }
