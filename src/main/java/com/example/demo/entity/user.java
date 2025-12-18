@@ -23,8 +23,7 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Vehicle> vehicles;
 
-    public User() {
-    }
+    public User() {}
 
     public User(String name, String email, String password) {
         this.name = name;
@@ -32,16 +31,18 @@ public class User {
         this.password = password;
     }
 
-    public Long getId() {
-        return id;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
 
-    public String getName() {
-        return name;
-    }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
 
-    public void setN
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
+
+    public List<Vehicle> getVehicles() { return vehicles; }
+    public void setVehicles(List<Vehicle> vehicles) { this.vehicles = vehicles; }
+}

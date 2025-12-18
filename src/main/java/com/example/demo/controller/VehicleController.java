@@ -9,7 +9,7 @@ import com.example.demo.entity.Vehicle;
 import com.example.demo.service.VehicleService;
 
 @RestController
-@RequestMapping("/vehicles") // base path
+@RequestMapping("/vehicles")
 public class VehicleController {
 
     private final VehicleService vehicleService;
@@ -18,28 +18,23 @@ public class VehicleController {
         this.vehicleService = vehicleService;
     }
 
-    // CREATE
     @PostMapping
     public Vehicle createVehicle(@RequestBody Vehicle vehicle) {
         return vehicleService.insertVehicle(vehicle);
     }
 
-    // READ ALL
     @GetMapping
     public List<Vehicle> getAllVehicles() {
         return vehicleService.getAllVehicles();
     }
 
-    // READ ONE
     @GetMapping("/{id}")
     public Optional<Vehicle> getVehicleById(@PathVariable Long id) {
         return vehicleService.getOneVehicle(id);
     }
 
-    // UPDATE
     @PutMapping("/{id}")
     public String updateVehicle(@PathVariable Long id, @RequestBody Vehicle vehicle) {
-
         Optional<Vehicle> vehicleOpt = vehicleService.getOneVehicle(id);
 
         if (vehicleOpt.isPresent()) {
@@ -48,23 +43,20 @@ public class VehicleController {
             existingVehicle.setModel(vehicle.getModel());
             existingVehicle.setNumber(vehicle.getNumber());
             existingVehicle.setType(vehicle.getType());
-
             vehicleService.insertVehicle(existingVehicle);
-            return "Vehicle Updated Successfully ✅";
+            return "Updated Successfully";
         }
-        return "Vehicle Not Found ❌";
+        return "Vehicle Not Found";
     }
 
-    // DELETE
     @DeleteMapping("/{id}")
     public String deleteVehicle(@PathVariable Long id) {
-
         Optional<Vehicle> vehicle = vehicleService.getOneVehicle(id);
 
         if (vehicle.isPresent()) {
             vehicleService.deleteVehicle(id);
-            return "Vehicle Deleted Successfully ✅";
+            return "Deleted Successfully";
         }
-        return "Vehicle Not Found ❌";
+        return "Vehicle Not Found";
     }
 }

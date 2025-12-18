@@ -9,7 +9,7 @@ import com.example.demo.entity.User;
 import com.example.demo.service.UserService;
 
 @RestController
-@RequestMapping("/users") 
+@RequestMapping("/users")
 public class UserController {
 
     private final UserService userService;
@@ -18,13 +18,11 @@ public class UserController {
         this.userService = userService;
     }
 
- 
     @PostMapping
     public User createUser(@RequestBody User user) {
         return userService.insertUser(user);
     }
 
-    // READ ALL
     @GetMapping
     public List<User> getAllUsers() {
         return userService.getAllUsers();
@@ -35,10 +33,8 @@ public class UserController {
         return userService.getOneUser(id);
     }
 
-    // UPDATE
     @PutMapping("/{id}")
     public String updateUser(@PathVariable Long id, @RequestBody User user) {
-
         Optional<User> userOpt = userService.getOneUser(id);
 
         if (userOpt.isPresent()) {
@@ -46,23 +42,20 @@ public class UserController {
             existingUser.setUsername(user.getUsername());
             existingUser.setEmail(user.getEmail());
             existingUser.setPassword(user.getPassword());
-
             userService.insertUser(existingUser);
-            return "User Updated Successfully ✅";
+            return "User Updated Successfully";
         }
-        return "User Not Found ❌";
+        return "User Not Found";
     }
 
-    // DELETE
     @DeleteMapping("/{id}")
     public String deleteUser(@PathVariable Long id) {
-
         Optional<User> user = userService.getOneUser(id);
 
         if (user.isPresent()) {
             userService.deleteUser(id);
-            return "User Deleted Successfully ✅";
+            return "User Deleted Successfully";
         }
-        return "User Not Found ❌";
+        return "User Not Found";
     }
 }
