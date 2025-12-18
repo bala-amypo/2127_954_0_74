@@ -9,7 +9,7 @@ import com.example.demo.entity.User;
 import com.example.demo.service.UserService;
 
 @RestController
-@RequestMapping("/users") // base path
+@RequestMapping("/users") 
 public class UserController {
 
     private final UserService userService;
@@ -18,7 +18,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    // CREATE
+ 
     @PostMapping
     public User createUser(@RequestBody User user) {
         return userService.insertUser(user);
@@ -30,7 +30,6 @@ public class UserController {
         return userService.getAllUsers();
     }
 
-    // READ ONE
     @GetMapping("/{id}")
     public Optional<User> getUserById(@PathVariable Long id) {
         return userService.getOneUser(id);
